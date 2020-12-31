@@ -2,11 +2,7 @@ if [ ${APPVEYOR_REPO_TAG} == "true" ]; then
   # first parameter is path to appveyor-build-agent or its shell wrapper, hopefully
   AGENT_PATH=$(greadlink -f $1)
 
-  echo $AGENT_PATH
-
   BUILD_AGENT="$(dirname $AGENT_PATH)/appveyor-build-agent"
-
-  echo $BUILD_AGENT
 
   # because agent version (and path) changes with updates we need to calculate actual csreq
 
@@ -16,13 +12,8 @@ if [ ${APPVEYOR_REPO_TAG} == "true" ]; then
 
   AGENT_CSREQ=$(xxd -p /tmp/appveyor-build-agent.csreq  | tr -d '\n')
 
-  echo "X'$AGENT_CSREQ'"
-
-  echo "INSERT INTO access VALUES('kTCCServiceAppleEvents','$BUILD_AGENT',1,1,1,X'$AGENT_CSREQ',NULL,0,'com.apple.finder',X'fade0c000000002c00000001000000060000000200000010636f6d2e6170706c652e66696e64657200000003',NULL,1605970638);"
 
   sqlite3 "/Users/appveyor/Library/Application Support/com.apple.TCC/TCC.db" "INSERT INTO access VALUES('kTCCServiceAppleEvents','$BUILD_AGENT',1,1,1,X'$AGENT_CSREQ',NULL,0,'com.apple.finder',X'fade0c000000002c00000001000000060000000200000010636f6d2e6170706c652e66696e64657200000003',NULL,1605970638);"
-
-  sqlite3 "/Users/appveyor/Library/Application Support/com.apple.TCC/TCC.db" ".dump access"
 
   brew install create-dmg dylibbundler jq
   build-scripts/build-macos.sh --no-build
