@@ -1,7 +1,12 @@
 if [ ${APPVEYOR_REPO_TAG} == "true" ]; then
   # first parameter is path to appveyor-build-agent or its shell wrapper, hopefully
-  AGENT_PATH = $(greadlink -f $1)
-  BUILD_AGENT = "$(dirname $AGENT_PATH)/appveyor-build-agent"
+  AGENT_PATH=$(greadlink -f $1)
+
+  echo $AGENT_PATH
+
+  BUILD_AGENT="$(dirname $AGENT_PATH)/appveyor-build-agent"
+
+  echo $BUILD_AGENT
 
   # because agent version (and path) changes with updates we need to calculate actual csreq
 
