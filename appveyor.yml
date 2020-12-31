@@ -82,7 +82,6 @@ for:
     - ninja -Cbuild
 
   after_build:
-    - sh: sqlite3 "/Users/appveyor/Library/Application Support/com.apple.TCC/TCC.db" "INSERT INTO access VALUES('kTCCServiceAppleEvents','$(dirname `greadlink -f $0`)/appveyor-build-agent',1,1,1,X'fade0c000000002800000001000000080000001469862bbf79a6795b784518beed2ae09bf63e58ef',NULL,0,'com.apple.finder',X'fade0c000000002c00000001000000060000000200000010636f6d2e6170706c652e66696e64657200000003',NULL,1605970638);"
+    - sh: build-scripts/ci/osx.deploy.sh $0
     - sh: export APPVEYOR_VNC_BLOCK=true
     - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-vnc.sh' | bash -e -
-    - build-scripts/ci/osx.deploy.sh
